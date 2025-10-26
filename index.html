@@ -23,7 +23,7 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       padding: 30px 40px;
       width: 100%;
-      max-width: 550px;
+      max-width: 580px;
       animation: fadeIn 0.4s ease-in-out;
     }
 
@@ -35,7 +35,21 @@
     h2 {
       text-align: center;
       color: #222;
+      margin-bottom: 10px;
+    }
+
+    .instruction-box {
+      background: #f0f8ff;
+      border-left: 4px solid #007bff;
+      padding: 12px 16px;
+      border-radius: 8px;
       margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .instruction-box strong {
+      color: #007bff;
     }
 
     label {
@@ -181,6 +195,15 @@
       margin-top: 6px;
     }
 
+    .example-box {
+      background: #f9f9f9;
+      border-left: 4px solid #007bff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
     @media (max-width: 600px) {
       body { padding: 20px; }
       .container { padding: 25px; }
@@ -192,6 +215,16 @@
 
   <div class="container">
     <h2>🔮 BCP Longevity Calculator</h2>
+
+    <div class="instruction-box">
+      <strong>Instructions:</strong><br>
+      🪐 <b>Ascendant Sign:</b> Select your Lagna (rising sign) from the birth chart.<br>
+      🧭 <b>Rule 1:</b> Choose this if the Ascendant has any planet in it. Then select where <b>Saturn</b> is placed.<br>
+      🌙 <b>Rule 2:</b> Choose this if the Ascendant is empty. Then select where <b>Moon</b> is placed.<br>
+      📅 The calculator shows your critical BCP years and their planetary rulers.<br><br>
+      ❓ <b>Don’t understand the BCP rules or age rulers?</b><br>
+      Click <b>📜 Show BCP Rules</b> below for full clarity before calculating.
+    </div>
 
     <label for="ascendant">Ascendant Sign:</label>
     <select id="ascendant">
@@ -258,7 +291,7 @@
     <div class="output" id="output"></div>
   </div>
 
-  <!-- Modal Popup for Rules -->
+  <!-- Modal Popup -->
   <div id="rulesModal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal()">×</button>
@@ -278,12 +311,32 @@
         </table>
 
         <h3>📘 Rule 1: Ascendant Is Occupied</h3>
-        <p>If the Ascendant (Lagna) has any planet placed in it, the BCP year corresponding to Saturn’s house can indicate risk or transformation.</p>
-        <p><strong>Example:</strong><br>Ascendant = Cancer, Saturn in 10th house (Aries) → Year 10, 22, 34 … are critical years.</p>
+        <p>
+          If the Ascendant (Lagna) has any planet placed in it, then death or danger may occur in the BCP year corresponding to the house where Saturn is placed.
+        </p>
+        <div class="example-box">
+          <strong>Example:</strong><br>
+          - Ascendant = Cancer (with Moon placed there → Ascendant is occupied).<br>
+          - Saturn is in the 10th house (Aries).<br>
+          ➤ So Year <b>10</b> becomes a critical BCP year. The same house repeats every 12 years (ages 10, 22, 34, etc.) under different planetary rulers.
+        </div>
 
         <h3>📘 Rule 2: Ascendant Is Empty</h3>
-        <p>When Ascendant is empty, key years correspond to the Moon’s house and the 5th, 6th & 8th from it. Each repeats every 12 years with a new BCP ruler.</p>
-        <p><strong>Example:</strong><br>Moon in 9th → Sensitive = 9, 1, 2, 4 → Years 1, 2, 4, 9 … repeating every 12 years under changing rulers.</p>
+        <p>
+          If the Ascendant has no planet, then death or danger may occur in the BCP year corresponding to:
+          <ul>
+            <li>The house where Moon is placed</li>
+            <li>The 5th house from Moon</li>
+            <li>The 6th house from Moon</li>
+            <li>The 8th house from Moon</li>
+          </ul>
+        </p>
+        <div class="example-box">
+          <strong>Example:</strong><br>
+          - Moon is in the 9th house.<br>
+          - Sensitive Houses = 9 (Moon), 1 (5th), 2 (6th), 4 (8th).<br>
+          ➤ So Years <b>1, 2, 4, and 9</b> are potentially vulnerable. These same houses repeat every 12 years under different planetary rulers.
+        </div>
       </div>
     </div>
   </div>
@@ -340,7 +393,7 @@
         details += "</ul>";
         output = `<strong>Rule 1 Applied:</strong><br>
                   Saturn is in ${saturn}, which is the ${saturnHouse}th house from Ascendant (${asc}).<br>
-                  These years correspond to when the BCP cycle activates Saturn’s house energy.<br><br>
+                  These years correspond to Saturn’s house being activated in the BCP cycle.<br><br>
                   Critical BCP Years and Rulers:${details}`;
       } 
       else {
@@ -360,8 +413,9 @@
         }).join("<br>");
         output = `<strong>Rule 2 Applied:</strong><br>
                   Moon is in ${moon}, which is the ${moonHouse}th house from Ascendant (${asc}).<br>
-                  Sensitive Houses (linked to Moon, 5th, 6th & 8th from it): ${sensitiveInfo}.<br><br>
-                  These houses mark emotionally or physically sensitive phases. Every 12 years, they repeat under a new BCP ruler cycle as below.<br><br>
+                  Sensitive Houses (Moon + 5th, 6th, 8th): ${sensitiveInfo}.<br><br>
+                  These houses indicate emotionally or physically vulnerable phases.<br>
+                  The same houses repeat every 12 years under a different BCP ruler, as listed below.<br><br>
                   Critical BCP Years and Rulers:<br>${details}`;
       }
 
