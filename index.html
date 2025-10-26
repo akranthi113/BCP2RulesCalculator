@@ -89,6 +89,15 @@
       background: #333;
     }
 
+    .reset-btn {
+      background: #dc3545;
+      margin-left: 10px;
+    }
+
+    .reset-btn:hover {
+      background: #b92a38;
+    }
+
     .output {
       margin-top: 25px;
       background: #fafafa;
@@ -244,6 +253,7 @@
 
     <button onclick="calculateBCP()">🔢 Calculate</button>
     <button class="secondary-btn" onclick="openModal()">📜 Show BCP Rules</button>
+    <button class="reset-btn" onclick="resetForm()">♻️ Reset</button>
 
     <div class="output" id="output"></div>
   </div>
@@ -268,28 +278,12 @@
         </table>
 
         <h3>📘 Rule 1: Ascendant Is Occupied</h3>
-        <p>
-          If the Ascendant (Lagna) has any planet placed in it, then death or danger may occur in the BCP year corresponding to the house where Saturn is placed.
-        </p>
-        <p><strong>Example:</strong><br>
-          - Ascendant = Cancer, with Moon placed there → Ascendant is occupied<br>
-          - Saturn is in the 10th house (Aries)<br>
-          - So Year 10 becomes a critical year in the BCP cycle.
-        </p>
+        <p>If the Ascendant (Lagna) has any planet placed in it, the BCP year corresponding to Saturn’s house can indicate risk or transformation.</p>
+        <p><strong>Example:</strong><br>Ascendant = Cancer, Saturn in 10th house (Aries) → Year 10, 22, 34 … are critical years.</p>
 
         <h3>📘 Rule 2: Ascendant Is Empty</h3>
-        <p>
-          If the Ascendant has no planet, then death or danger may occur in the BCP year corresponding to:<br>
-          - The house where Moon is placed<br>
-          - The 5th house from Moon<br>
-          - The 6th house from Moon<br>
-          - The 8th house from Moon
-        </p>
-        <p><strong>Example:</strong><br>
-          - Moon is in the 9th house<br>
-          - Sensitive houses = 9 (Moon), 1 (5th), 2 (6th), 4 (8th)<br>
-          - So Years 1, 2, 4, and 9 are potentially vulnerable.
-        </p>
+        <p>When Ascendant is empty, key years correspond to the Moon’s house and the 5th, 6th & 8th from it. Each repeats every 12 years with a new BCP ruler.</p>
+        <p><strong>Example:</strong><br>Moon in 9th → Sensitive = 9, 1, 2, 4 → Years 1, 2, 4, 9 … repeating every 12 years under changing rulers.</p>
       </div>
     </div>
   </div>
@@ -314,6 +308,16 @@
       if (e.target === document.getElementById("rulesModal")) closeModal();
     }
 
+    function resetForm() {
+      document.getElementById("ascendant").selectedIndex = 0;
+      document.getElementById("rule").selectedIndex = 0;
+      document.getElementById("saturnSign").selectedIndex = 0;
+      document.getElementById("moonSign").selectedIndex = 0;
+      document.getElementById("rule1Inputs").style.display = "block";
+      document.getElementById("rule2Inputs").style.display = "none";
+      document.getElementById("output").innerHTML = "";
+    }
+
     function calculateBCP() {
       const asc = document.getElementById("ascendant").value;
       const rule = document.getElementById("rule").value;
@@ -336,8 +340,10 @@
         details += "</ul>";
         output = `<strong>Rule 1 Applied:</strong><br>
                   Saturn is in ${saturn}, which is the ${saturnHouse}th house from Ascendant (${asc}).<br>
+                  These years correspond to when the BCP cycle activates Saturn’s house energy.<br><br>
                   Critical BCP Years and Rulers:${details}`;
-      } else {
+      } 
+      else {
         const moon = document.getElementById("moonSign").value;
         const moonHouse = (signOrder.indexOf(moon) - signOrder.indexOf(asc) + 12) % 12 + 1;
         const h5 = (moonHouse + 4 - 1) % 12 + 1;
@@ -350,11 +356,12 @@
           for (let age = h; age <= 96; age += 12) {
             sub += `Age ${age} → ${getBCPRuler(age)}<br>`;
           }
-          return `${h}th House (${getSignForHouse(asc, h)}):<br>${sub}`;
+          return `<strong>${h}th House (${getSignForHouse(asc, h)})</strong>:<br>${sub}`;
         }).join("<br>");
         output = `<strong>Rule 2 Applied:</strong><br>
                   Moon is in ${moon}, which is the ${moonHouse}th house from Ascendant (${asc}).<br>
-                  Sensitive Houses: ${sensitiveInfo}<br><br>
+                  Sensitive Houses (linked to Moon, 5th, 6th & 8th from it): ${sensitiveInfo}.<br><br>
+                  These houses mark emotionally or physically sensitive phases. Every 12 years, they repeat under a new BCP ruler cycle as below.<br><br>
                   Critical BCP Years and Rulers:<br>${details}`;
       }
 
